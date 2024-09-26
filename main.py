@@ -5,7 +5,7 @@ import telebot
 import subprocess
 
 # Insert your Telegram bot token here
-bot = telebot.TeleBot('7073204909:AAHtrbmX-dijQy2SC_OV7FmCVJleJcZQXsA')
+bot = telebot.TeleBot('7073204956:AAHtrbmX-dijQy2SC_OV7FmCVJleJcZQXsA')
 
 # Handler for /ddos command
 @bot.message_handler(commands=['ddos'])
