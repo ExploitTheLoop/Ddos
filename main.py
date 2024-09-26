@@ -1,5 +1,4 @@
 #!/usr/bin/python3
-# By Indian Watchdogs @SrcEsp
 
 import telebot
 import subprocess
